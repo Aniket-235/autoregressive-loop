@@ -1,0 +1,36 @@
+/* design tokens, the day theme, the reset and global type — every other sheet builds on these */
+:root{
+  --ink:#0A0F1A; --slab:#121A29; --inset:#0F1725; --rule:#26334A; --rule-soft:#1B2537;
+  --bone:#E8E6E1; --muted:#8494AE; --dim:#5A6884;
+  --flare:#F2A03D; --flare-soft:#F2A03D2e; --verdigris:#59C2B4; --rust:#C86A5C;
+  --shadow:0 18px 44px -22px #000c;
+  --f-disp:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --f-ui:"Manrope","Helvetica Neue",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono","SFMono-Regular",Menlo,monospace;
+}
+:root[data-mode="day"]{
+  --ink:#E9EDF3; --slab:#FFFFFF; --inset:#F3F6FA; --rule:#C9D3E2; --rule-soft:#DEE5EF;
+  --bone:#131C2B; --muted:#54637C; --dim:#6E7C93;
+  --flare:#B4650C; --flare-soft:#B4650C1f; --verdigris:#0E7A6E; --rust:#A2453A;
+  --shadow:0 14px 34px -20px #1a2a4433;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ink); color:var(--bone);
+  font-family:var(--f-ui); font-size:14px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select{font:inherit;color:inherit}
+h1,h2,h3{margin:0;font-family:var(--f-disp);font-weight:800;letter-spacing:-.015em}
+
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--rule);border-radius:4px}
+::-webkit-scrollbar-track{background:transparent}
+:focus-visible{outline:2px solid var(--flare);outline-offset:2px}
+
+.snap *,.snap *::before,.snap *::after{transition:none!important}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}

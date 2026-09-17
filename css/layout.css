@@ -1,0 +1,72 @@
+/* the app grid, the header, the panel chrome, the pop-out zoom, and the narrow-screen fallback */
+.app{height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:10px;overflow:hidden}
+
+/* ---------- header ---------- */
+.top{grid-row:1;display:flex;align-items:center;gap:18px;padding:0 4px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand h1{font-size:19px;white-space:nowrap}
+.pulse{width:10px;height:10px;border-radius:50%;background:var(--rule);flex:none;transition:background .25s}
+.pulse.live{background:var(--flare);box-shadow:0 0 0 0 var(--flare);animation:beat 1.4s ease-out infinite}
+@keyframes beat{to{box-shadow:0 0 0 12px #f2a03d00}}
+.tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.02em;color:var(--verdigris);
+  border:1px solid var(--rule);border-radius:999px;padding:3px 9px;white-space:nowrap}
+.metrics{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+.metric{background:var(--slab);border:1px solid var(--rule-soft);border-radius:9px;padding:5px 11px;text-align:right;min-width:74px}
+.metric b{display:block;font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:16px;font-weight:600;line-height:1.15}
+.metric span{font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)}
+.ghost{background:transparent;border:1px solid var(--rule);border-radius:8px;padding:7px 12px;cursor:pointer;
+  font-size:12.5px;font-weight:600;color:var(--muted);transition:.16s}
+.ghost:hover{color:var(--bone);border-color:var(--flare)}
+
+/* ---------- layout ---------- */
+main{grid-row:2;display:grid;grid-template-columns:minmax(400px,44%) minmax(0,1fr);gap:10px;min-height:0}
+.right{display:grid;grid-template-rows:minmax(0,1fr) auto minmax(0,1.15fr);gap:10px;min-height:0}
+.panel{background:var(--slab);border:1px solid var(--rule-soft);border-radius:14px;
+  display:flex;flex-direction:column;min-height:0;box-shadow:var(--shadow);overflow:hidden}
+.ph{display:flex;align-items:baseline;gap:10px;padding:11px 15px 9px;border-bottom:1px solid var(--rule-soft);flex:none}
+.ph h2{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-family:var(--f-ui)}
+.ph .hint{margin-left:auto;font-family:var(--f-mono);font-size:10.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.xp{flex:none;background:none;border:1px solid transparent;border-radius:6px;padding:3px;
+  margin:-4px -5px -4px 9px;cursor:pointer;color:var(--dim);display:flex;line-height:0;transition:.15s}
+.xp:hover{color:var(--flare);border-color:var(--rule)}
+.xp svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.xp svg .b{display:none}
+.panel.zoomed .xp svg .a{display:none}
+.panel.zoomed .xp svg .b{display:block}
+.panel.zoomed .xp{color:var(--flare)}
+
+/* pop-out: one panel takes the whole working area, the caption and every
+   control stay put so the loop can still be driven while zoomed */
+.app[data-zoom] .top{display:none}
+.app[data-zoom] main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+.app[data-zoom] .right{display:contents}
+.app[data-zoom] .panel:not(.zoomed){display:none}
+.panel.zoomed .ph{padding:14px 22px 12px}
+.panel.zoomed .ph h2{font-size:13px}
+.panel.zoomed .ph .hint{font-size:12px}
+.panel.zoomed .promptrow{padding:14px 24px 0}
+.panel.zoomed .promptrow input{font-size:15px;padding:9px 13px}
+.panel.zoomed .outtext{font-size:40px;line-height:1.5;padding:20px 28px 28px}
+.panel.zoomed .tapewrap{flex:1;min-height:0;overflow-y:auto;padding:16px 22px}
+.panel.zoomed .tape{flex-wrap:wrap;align-content:flex-start;gap:8px}
+.panel.zoomed .chip{font-size:17px;padding:6px 10px 4px;border-radius:9px}
+.panel.zoomed .chip u{font-size:10px;margin-top:3px}
+.panel.zoomed .rows{padding:16px 26px 6px;gap:7px}
+.panel.zoomed .row,.panel.zoomed .rowhead{grid-template-columns:190px minmax(0,1fr) 84px 84px 80px 90px;gap:14px}
+.panel.zoomed .row{font-size:18px;padding:4px 0}
+.panel.zoomed .rowhead{font-size:11px;padding-bottom:8px}
+.panel.zoomed .row .bar{height:24px;border-radius:5px}
+.panel.zoomed .row .bar b{border-radius:5px}
+.panel.zoomed .row .vl{font-size:16.5px}
+.panel.zoomed .row .vm,.panel.zoomed .row .vk,.panel.zoomed .row .vc{font-size:15px}
+.panel.zoomed .cum{padding:12px 26px 18px}
+.panel.zoomed .cumlab{font-size:11.5px;margin-bottom:7px}
+.panel.zoomed .cumbar{height:30px;border-radius:7px}
+
+
+@media (max-width:1120px){
+  .app{height:auto;overflow:visible}
+  main{grid-template-columns:1fr}
+  .svgwrap{height:640px}
+  .outtext{font-size:18px}
+}

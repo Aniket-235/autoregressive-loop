@@ -1,0 +1,42 @@
+/* the next-token distribution: candidate rows and the cumulative-mass bar the draw lands on */
+.rows{flex:1;min-height:0;overflow-y:auto;padding:9px 14px 4px;display:flex;flex-direction:column;gap:3px}
+.row,.rowhead{display:grid;grid-template-columns:100px minmax(0,1fr) 52px 52px 50px 56px;
+  align-items:center;gap:8px}
+.row{font-family:var(--f-mono);font-size:12px;padding:2px 0;transition:opacity .25s}
+.rowhead{font-family:var(--f-mono);font-size:8px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--dim);padding-bottom:5px;margin-bottom:2px;border-bottom:1px solid var(--rule-soft)}
+.rowhead span:nth-child(n+3){text-align:right}
+.rowhead span:nth-child(6){color:var(--muted)}
+.row .tk{white-space:pre;overflow:hidden;text-overflow:ellipsis;color:var(--bone)}
+.row .tk i{color:var(--dim);font-style:normal}
+.row .bar{height:13px;background:var(--inset);border-radius:3px;overflow:hidden;position:relative}
+.row .bar b{display:block;position:relative;height:100%;width:0;background:var(--muted);border-radius:3px;
+  transition:width .3s cubic-bezier(.3,.9,.3,1),background .25s}
+/* the model's own probability, left behind as an outline when masking inflates the rest */
+.row .bar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;
+  background:var(--muted);opacity:.26;transition:width .3s cubic-bezier(.3,.9,.3,1)}
+.row .vl{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:11.5px}
+.row .vm,.row .vk,.row .vc{text-align:right;font-variant-numeric:tabular-nums;color:var(--dim);font-size:11px}
+.row .vk{color:var(--muted)}
+/* the running total top-p thresholds against */
+.row .vc{color:var(--verdigris);opacity:.85}
+.row.edge{border-bottom:1px dashed var(--flare);padding-bottom:4px;margin-bottom:1px}
+.row.edge .vc{color:var(--flare);font-weight:600}
+.row.win .vl{color:var(--flare);font-weight:600}
+.row.live .bar b{background:var(--flare)}
+.row.cut{opacity:.3}
+.row.cut .tk{text-decoration:line-through;text-decoration-color:var(--rust)}
+.row.cut .bar b{background:var(--rust)}
+.row.win .tk{color:var(--flare);font-weight:600}
+.row.win .bar b{background:var(--flare);box-shadow:0 0 12px #f2a03d99}
+.row.other .tk{color:var(--dim);font-style:italic}
+.cum{flex:none;padding:8px 14px 13px;border-top:1px solid var(--rule-soft)}
+.cumlab{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:9.5px;color:var(--dim);
+  text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px}
+.cumbar{height:19px;border-radius:5px;overflow:hidden;display:flex;background:var(--inset);position:relative}
+.segs{display:flex;height:100%;width:100%;border-radius:5px;overflow:hidden}
+.cumbar s{display:block;height:100%;text-decoration:none;border-right:1px solid var(--slab);transition:width .3s}
+.dart{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--bone);left:0;opacity:0;transition:left .45s cubic-bezier(.3,1.3,.5,1),opacity .2s}
+.dart.on{opacity:1}
+.dart::before{content:"";position:absolute;top:-4px;left:-4px;border:5px solid transparent;border-top-color:var(--bone)}
+

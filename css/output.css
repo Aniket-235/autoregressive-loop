@@ -1,0 +1,36 @@
+/* the output panel (prompt row + running text) and the token tape */
+.promptrow{display:flex;gap:8px;padding:10px 14px 0;flex:none;align-items:center}
+.promptrow label{font-size:9.5px;text-transform:uppercase;letter-spacing:.11em;color:var(--dim)}
+.promptrow input{flex:1;background:var(--inset);border:1px solid var(--rule-soft);border-radius:8px;
+  padding:7px 11px;font-family:var(--f-mono);font-size:12.5px;min-width:0}
+.promptrow input:focus{outline:2px solid var(--flare);outline-offset:-1px;border-color:transparent}
+.outtext{flex:1;min-height:0;overflow-y:auto;padding:12px 16px 16px;font-size:23px;line-height:1.62;
+  font-family:var(--f-ui);letter-spacing:-.005em;word-break:break-word;white-space:pre-wrap}
+.outtext .p{color:var(--muted)}
+.outtext .g{color:var(--bone)}
+.outtext .n{color:var(--flare);background:var(--flare-soft);border-radius:4px;animation:pop .34s ease-out}
+.outtext .sp{font-family:var(--f-mono);font-size:.62em;color:var(--verdigris);
+  background:#59c2b414;border:1px solid #59c2b433;border-radius:5px;padding:1px 4px;
+  vertical-align:.12em;white-space:normal}
+.outtext .sp.n{color:var(--flare);background:var(--flare-soft);border-color:#f2a03d66;animation:pop .34s ease-out}
+@keyframes pop{from{background:var(--flare);color:var(--ink)}}
+.caret{display:inline-block;width:2px;height:.95em;background:var(--flare);vertical-align:-.1em;margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ---------- tape ---------- */
+.tapewrap{overflow-x:auto;overflow-y:hidden;padding:11px 14px 13px;flex:none;scrollbar-width:thin}
+.tape{display:flex;gap:5px;align-items:flex-end;min-height:46px}
+.chip{border:1px solid var(--rule-soft);border-radius:7px;padding:4px 7px 3px;background:var(--inset);
+  font-family:var(--f-mono);font-size:12.5px;white-space:pre;flex:none;position:relative;transition:.2s}
+.chip i{color:var(--dim);font-style:normal}
+.chip u{display:block;text-decoration:none;font-size:8.5px;color:var(--dim);text-align:center;margin-top:2px;
+  font-variant-numeric:tabular-nums}
+.chip.pr{color:var(--muted)}
+.chip.gn{color:var(--flare);border-color:#f2a03d55}
+.chip.new{animation:land .38s cubic-bezier(.2,1.6,.5,1)}
+.chip.spec{color:var(--verdigris);border-color:#59c2b455;background:#59c2b414}
+.chip.eos{color:var(--ink);border-color:var(--verdigris);background:var(--verdigris)}
+.chip.eos i,.chip.eos u{color:var(--ink);opacity:.65}
+@keyframes land{from{transform:translateY(-16px) scale(.7);opacity:0}}
+.chip.cached::after{content:"";position:absolute;left:5px;right:5px;bottom:-4px;height:2px;background:var(--verdigris);opacity:.65;border-radius:2px}
+

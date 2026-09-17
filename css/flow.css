@@ -1,0 +1,30 @@
+/* the SVG flow chart: nodes, edges, the feedback spark, and the busy pulse on the forward pass */
+.svgwrap{flex:1;min-height:0;padding:8px 6px 6px;display:flex;justify-content:center}
+#flow{width:100%;height:100%}
+.node rect,.node polygon{fill:var(--inset);stroke:var(--rule);stroke-width:1.5;transition:fill .2s,stroke .2s}
+.node .t{font-family:var(--f-disp);font-weight:600;font-size:16px;fill:var(--bone);transition:fill .2s}
+.node .s{font-family:var(--f-mono);font-size:10.5px;fill:var(--dim);transition:fill .2s}
+.node.on rect,.node.on polygon{fill:var(--flare-soft);stroke:var(--flare);stroke-width:2.5}
+.node.on .t{fill:var(--flare)}
+.node.on .s{fill:var(--muted)}
+.node.done rect,.node.done polygon{stroke:var(--rule);fill:var(--inset)}
+.node.cache rect{stroke-dasharray:5 4}
+.node.cache.on rect{stroke:var(--verdigris);fill:#59c2b422;stroke-dasharray:5 4}
+.node.cache.on .t{fill:var(--verdigris)}
+.node.on rect{filter:drop-shadow(0 0 14px #f2a03d55)}
+.edge{color:var(--rule)}
+.edge path{stroke:currentColor;stroke-width:1.75;fill:none}
+.edge polygon{fill:currentColor}
+.edge text{font-family:var(--f-mono);font-size:11px;fill:var(--dim);letter-spacing:.04em}
+.edge.on{color:var(--flare)}
+.edge.on path{stroke-width:2.5;stroke-dasharray:7 6;animation:march .55s linear infinite}
+.edge.on text{fill:var(--flare)}
+.edge.mem{color:var(--rule)}
+.edge.mem.on{color:var(--verdigris)}
+@keyframes march{to{stroke-dashoffset:-13}}
+.spark{fill:var(--flare);opacity:0}
+.spark.go{animation:ride 1s cubic-bezier(.5,0,.5,1) forwards}
+@keyframes ride{0%{opacity:0}8%{opacity:1}92%{opacity:1}100%{opacity:0}}
+
+.node.busy rect{animation:think .9s ease-in-out infinite}
+@keyframes think{50%{stroke-opacity:.35}}

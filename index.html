@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Autoregressive Loop</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/flow.css">
+<link rel="stylesheet" href="css/output.css">
+<link rel="stylesheet" href="css/scope.css">
+<link rel="stylesheet" href="css/controls.css">
+<link rel="stylesheet" href="css/sheet.css">
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <span class="pulse" id="pulse"></span>
+      <h1>Autoregressive Loop</h1>
+      <span class="tag" id="modelTag">no model loaded yet</span>
+    </div>
+    <div class="metrics">
+      <div class="metric"><b id="mStage">0</b><span>micro-steps</span></div>
+      <div class="metric"><b id="mTok">0</b><span>tokens made</span></div>
+      <div class="metric"><b id="mCtx">0</b><span>context len</span></div>
+      <div class="metric"><b id="mVocab">0</b><span>vocab size</span></div>
+    </div>
+    <button class="ghost" id="modelBtn">Model…</button>
+    <button class="ghost" id="themeBtn">Daylight</button>
+  </header>
+
+  <main>
+    <section class="panel" id="p-loop">
+      <div class="ph"><h2>The loop</h2><span class="hint" id="passHint">pass 0</span><button class="xp" data-p="p-loop" title="Expand — key 1" aria-label="Expand this panel"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="a" d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"/><path class="b" d="M6 2.5V6H2.5M13.5 6H10V2.5M10 13.5V10h3.5M2.5 10H6v3.5"/></svg></button></div>
+      <div class="svgwrap"><svg id="flow" viewBox="0 0 620 656" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Flow chart of the autoregressive decoding loop"></svg></div>
+    </section>
+
+    <div class="right">
+      <section class="panel" id="p-out">
+        <div class="ph"><h2>Output</h2><span class="hint">grey = prompt · marigold = generated</span><button class="xp" data-p="p-out" title="Expand — key 2" aria-label="Expand this panel"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="a" d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"/><path class="b" d="M6 2.5V6H2.5M13.5 6H10V2.5M10 13.5V10h3.5M2.5 10H6v3.5"/></svg></button></div>
+        <div class="promptrow">
+          <label for="promptIn">Prompt</label>
+          <input id="promptIn" type="text" spellcheck="false" value="A language model predicts the next">
+          <button class="btn" id="restartBtn">Restart</button>
+        </div>
+        <div class="outtext" id="outText"></div>
+      </section>
+
+      <section class="panel" id="p-tape">
+        <div class="ph"><h2>Token tape</h2><span class="hint" id="tapeHint">· marks a leading space</span><button class="xp" data-p="p-tape" title="Expand — key 3" aria-label="Expand this panel"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="a" d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"/><path class="b" d="M6 2.5V6H2.5M13.5 6H10V2.5M10 13.5V10h3.5M2.5 10H6v3.5"/></svg></button></div>
+        <div class="tapewrap" id="tapeWrap"><div class="tape" id="tape"></div></div>
+      </section>
+
+      <section class="panel" id="p-draw">
+        <div class="ph"><h2 id="scopeTitle">Next-token distribution</h2><span class="hint" id="scopeHint">waiting for a forward pass</span><button class="xp" data-p="p-draw" title="Expand — key 4" aria-label="Expand this panel"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="a" d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"/><path class="b" d="M6 2.5V6H2.5M13.5 6H10V2.5M10 13.5V10h3.5M2.5 10H6v3.5"/></svg></button></div>
+        <div class="rows" id="rows"></div>
+        <div class="cum">
+          <div class="cumlab"><span id="cumL">Probability mass, laid end to end</span><span id="cumR">random draw u = —</span></div>
+          <div class="cumbar" id="cumBar"><span id="cumSeg" class="segs"></span><div class="dart" id="dart"></div></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="caption">
+      <span class="st" id="capStage">ready</span>
+      <span class="cx" id="capText">Press <em>Play</em> to run the loop, or <em>Step</em> to walk through it one micro-step at a time. Every token you see is produced by feeding the model's own output back into its input.</span>
+    </div>
+    <div class="controls">
+      <button class="btn primary" id="playBtn">▶ Play <kbd>space</kbd></button>
+      <button class="btn" id="stepBtn">Step <kbd>→</kbd></button>
+      <button class="btn" id="tokBtn">Whole token <kbd>↵</kbd></button>
+      <button class="btn" id="resetBtn">Reset <kbd>R</kbd></button>
+      <div class="grp"><label for="speedSel">Pace</label>
+        <select id="speedSel">
+          <option value="1100">Teaching</option>
+          <option value="620" selected>Steady</option>
+          <option value="300">Brisk</option>
+          <option value="0">Full speed</option>
+        </select>
+      </div>
+      <div class="grp"><label for="tempR">Temp</label><input type="range" id="tempR" min="0.05" max="2" step="0.05" value="0.8"><output id="tempO">0.80</output></div>
+      <div class="grp"><label for="kR">Top-k</label><input type="range" id="kR" min="1" max="60" step="1" value="8"><output id="kO">8</output></div>
+      <div class="grp"><label for="pR">Top-p</label><input type="range" id="pR" min="0.05" max="1" step="0.01" value="0.92"><output id="pO">0.92</output></div>
+      <div class="grp"><label for="maxR">Max new</label><input type="range" id="maxR" min="4" max="500" step="1" value="500"><output id="maxO">500</output></div>
+      <div class="grp"><label for="seedI">Seed</label><input type="range" id="seedI" min="1" max="99" step="1" value="7"><output id="seedO">7</output></div>
+      <label class="sw"><input type="checkbox" id="cacheChk" checked> KV cache</label>
+    </div>
+  </footer>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="card">
+    <h3>Where do the next-token scores come from?</h3>
+    <p>An open model running in this tab on WebGPU — Gemma 3 270M, SmolLM2, Qwen2.5, GPT-2. Weights download once from Hugging Face and then run on your GPU. Every score you see is the model's own logit over its whole vocabulary, and the KV cache switch controls the model's actual cache.</p>
+
+    <div class="fld"><label for="hfSel">Model</label>
+      <select id="hfSel">
+        <option value="onnx-community/gemma-3-270m-it-ONNX">Gemma 3 · 270M · instruction tuned</option>
+        <option value="HuggingFaceTB/SmolLM-135M">SmolLM 1 · 135M · base — plain continuation</option>
+        <option value="HuggingFaceTB/SmolLM2-135M-Instruct">SmolLM2 · 135M · instruction tuned — quickest</option>
+        <option value="HuggingFaceTB/SmolLM2-360M-Instruct">SmolLM2 · 360M · instruction tuned</option>
+        <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 · 0.5B · instruction tuned</option>
+        <option value="Xenova/gpt2">GPT-2 · 124M · base — the original</option>
+      </select></div>
+    <div class="fld"><label for="hfId">Hugging Face repository — edit it for anything else</label>
+      <input type="text" id="hfId" spellcheck="false" value="onnx-community/gemma-3-270m-it-ONNX"></div>
+    <div class="two">
+      <div class="fld"><label for="hfDtype">Weights</label>
+        <select id="hfDtype">
+          <option value="q4f16">q4f16 — smallest</option>
+          <option value="q4">q4</option>
+          <option value="q8">q8</option>
+          <option value="fp16">fp16</option>
+          <option value="fp32">fp32 — largest</option>
+        </select></div>
+      <div class="fld"><label>Runs on</label><div class="ro" id="hfDev">checking…</div></div>
+    </div>
+    <button class="btn primary wide" id="loadBtn">Download and load</button>
+    <div class="prog" id="prog" hidden><i id="progBar"></i></div>
+    <div class="pnote" id="progText">The first load pulls a few hundred megabytes and is cached by the browser afterwards.</div>
+    <label class="sw2 off" id="chatRow"><input type="checkbox" id="chatChk" disabled>
+      <span id="chatLabel">Wrap the prompt in this model's chat template</span></label>
+    <div class="pnote" id="stopLine"></div>
+
+    <div class="acts">
+      <button class="btn primary" id="closeSheet">Done</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

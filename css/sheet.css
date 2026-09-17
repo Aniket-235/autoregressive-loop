@@ -1,0 +1,23 @@
+/* the "Model…" sheet: picking and loading a model to run in the tab */
+.sheet{position:fixed;inset:0;background:#0a0f1acc;display:flex;align-items:center;justify-content:center;z-index:40;padding:20px}
+.sheet[hidden]{display:none}
+.card{background:var(--slab);border:1px solid var(--rule);border-radius:16px;padding:22px;width:min(560px,100%);
+  max-height:90dvh;overflow-y:auto;box-shadow:0 30px 70px -30px #000}
+.card h3{font-size:19px;margin-bottom:4px}
+.card p{color:var(--muted);font-size:13px;margin:0 0 16px}
+.card .fld{display:grid;gap:5px;margin-bottom:12px}
+.card .fld label{font-size:9.5px;text-transform:uppercase;letter-spacing:.11em;color:var(--dim)}
+.card input[type=text]{background:var(--inset);border:1px solid var(--rule-soft);border-radius:8px;padding:8px 11px;font-family:var(--f-mono);font-size:12.5px}
+.card .sw2{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--bone);cursor:pointer;margin:11px 0 7px}
+.card .sw2 input{accent-color:var(--flare);flex:none}
+.card .sw2.off{opacity:.45;cursor:not-allowed}
+.card .acts{display:flex;gap:9px;justify-content:flex-end;padding-top:4px}
+.card .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card .ro{background:var(--inset);border:1px solid var(--rule-soft);border-radius:8px;padding:8px 11px;
+  font-family:var(--f-mono);font-size:12.5px;color:var(--verdigris)}
+.btn.wide{width:100%;justify-content:center;margin-bottom:9px}
+.prog{height:6px;border-radius:3px;background:var(--inset);overflow:hidden;margin-bottom:7px}
+.prog[hidden]{display:none}
+.prog i{display:block;height:100%;width:0;background:var(--flare);border-radius:3px;transition:width .25s}
+.pnote{font-family:var(--f-mono);font-size:11px;color:var(--dim);line-height:1.5;min-height:16px}
+.pnote.err{color:var(--rust)} .pnote.ok{color:var(--verdigris)}
