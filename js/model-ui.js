@@ -12,6 +12,10 @@ function stopHint(){
   h.textContent = t; h.title = t;
 }
 
+/* the prompt the box starts with: a question for a model that will answer,
+   an opening to continue for one that will not */
+const PROMPT = { chat:"What is a transformer? Explain very briefly.", plain:"A transformer is" };
+
 export function syncChatUI(){
   const row = $("chatRow"), box = $("chatChk");
   box.disabled = !HF.tmpl;
@@ -25,6 +29,10 @@ export function syncChatUI(){
     line.className = "pnote ok";
     line.textContent = "Stops at " + [...HF.eos].map(id => hfDecode(id) + "  id " + id).join("   ");
   } else { line.className = "pnote"; line.textContent = ""; }
+  /* follow the switch only while the box still holds a default, so a prompt
+     you typed survives flipping the template on and off to compare */
+  const p = $("promptIn"), cur = p.value.trim();
+  if(!cur || cur === PROMPT.chat || cur === PROMPT.plain) p.value = HF.chat && HF.tmpl ? PROMPT.chat : PROMPT.plain;
   stopHint();
 }
 
