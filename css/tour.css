@@ -1,0 +1,19 @@
+/* the guided tour: a spotlight cut out of a dimmed page, and a card beside it */
+.tour{position:fixed;inset:0;z-index:50}
+.tour[hidden]{display:none}
+.tour-hole{position:fixed;border-radius:14px;pointer-events:none;box-shadow:0 0 0 100vmax #0a0f1ab8;
+  transition:top .3s cubic-bezier(.3,.9,.3,1),left .3s cubic-bezier(.3,.9,.3,1),
+             width .3s cubic-bezier(.3,.9,.3,1),height .3s cubic-bezier(.3,.9,.3,1)}
+.tour-hole.none{top:50%;left:50%;width:0;height:0}
+.tour-card{position:fixed;width:min(340px,calc(100vw - 24px));background:var(--slab);border:1px solid var(--rule);
+  border-radius:14px;padding:16px 18px 14px;box-shadow:0 24px 60px -24px #000;color:var(--bone);
+  transition:top .3s cubic-bezier(.3,.9,.3,1),left .3s cubic-bezier(.3,.9,.3,1)}
+.tour-card h3{font-size:16px;margin-bottom:6px}
+.tour-card p{margin:0 0 14px;font-size:13.5px;line-height:1.5;color:var(--muted)}
+.tour-card p em{font-style:normal;color:var(--flare);font-weight:600}
+.tour-card p code{font-family:var(--f-mono);font-size:.9em;color:var(--verdigris)}
+.tour-foot{display:flex;align-items:center;gap:8px}
+.tour-foot .n{font-family:var(--f-mono);font-size:11px;color:var(--dim);margin-right:auto;font-variant-numeric:tabular-nums}
+.tour-foot .btn{padding:6px 11px;font-size:12.5px}
+.tour-foot .btn:disabled{opacity:.4;cursor:default}
+.tour-foot .btn:disabled:hover{border-color:var(--rule);color:inherit}

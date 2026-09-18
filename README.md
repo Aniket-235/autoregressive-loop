@@ -14,6 +14,8 @@ Everything runs locally. Nothing you type leaves your machine.
 
 ## Getting started
 
+A short tour runs the first time you open the page, pointing out each panel and control. Skip it with `Esc`, or replay it any time with **Tour** in the top-right corner.
+
 1. Click **Model…** in the top-right corner.
 2. Pick a model from the list — **SmolLM2 · 135M · instruction tuned** is the quickest to load and the fastest to run.
 3. Click **Download and load** and wait for the progress bar to say *Ready*.

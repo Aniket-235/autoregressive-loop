@@ -14,14 +14,17 @@
      captions.js   the running caption for each stage
      loop.js       the stage machine: advance, play, reset
      ui.js         control wiring, pop-out zoom, the model sheet
+     tour.js       the guided tour for first-time visitors
 */
 import { buildFlow } from "./flow.js";
 import { syncChatUI, syncModelUI } from "./model-ui.js";
 import { reset } from "./loop.js";
 import { wire } from "./ui.js";
+import { initTour } from "./tour.js";
 
 buildFlow();
 wire();
 syncChatUI();
 syncModelUI();
 reset();
+initTour();

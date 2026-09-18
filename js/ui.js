@@ -10,7 +10,7 @@ import { advance, wholeToken, setPlaying, reset, refreshScope } from "./loop.js"
 
 /* ---------- pop-out ---------- */
 const PANELS = ["p-loop","p-out","p-tape","p-draw"];
-function setZoom(id){
+export function setZoom(id){
   const app = document.querySelector(".app"), cur = app.getAttribute("data-zoom");
   document.querySelectorAll(".panel.zoomed").forEach(p => p.classList.remove("zoomed"));
   if(!id || cur === id) app.removeAttribute("data-zoom");
